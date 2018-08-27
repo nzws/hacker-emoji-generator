@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB"
+        crossorigin="anonymous">
+    <title>Hacker Emoji Generator</title>
+    <style>
+        body {
+            padding-top: 30px;
+            width: 100%;
+            height: 100%;
+            background: #17191f;
+            color: #fff;
+        }
+
+        .invisible {
+            display: none;
+        }
+
+        .box {
+            background: #282c37;
+            width: 100%;
+            padding: 10px;
+        }
+
+        img {
+            width: 20px;
+            height: 20px;
+        }
+    </style>
+</head>
+<body class="container">
+    <h3>Hacker Emoji Generator</h3>
+    <a href="https://github.com/yuzulabo/hacker-emoji-generator" target="_blank">Source code</a> | created by <a href="https://knzk.me/@nzws"
+        target="_blank">nzws / ねじわさ</a>
+    <hr>
+    <div class="row">
+        <div class="col-md-5">
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="text_note">text</span>
+                </div>
+                <input type="text" class="form-control" placeholder="only alphabetic characters or blanks" aria-describedby="text_note" id="text"
+                    onkeyup="update()">
+            </div>
+            <div class="btn-group" role="group">
+                <button type="button" class="btn btn-primary" id="m-normal" onclick="change('normal')">Normal</button>
+                <button type="button" class="btn btn-secondary" id="m-zero" onclick="change('zero')">Zero Width</button>
+            </div>
+        </div>
+        <div class="col-md-7">
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="generated_text_note">generated text</span>
+                </div>
+                <textarea class="form-control" aria-describedby="generated_text_note" id="gtext" readonly></textarea>
+            </div>
+            <div class="box" id="box">Example</div>
+        </div>
+    </div>
+    <script>
+        var space = " ";
+        function update() {
+            const original = elemId("text").value.toLowerCase();
+            if (!original) {
+                elemId("gtext").value = "";
+                elemId("box").innerHTML = "Example";
+                return;
+            }
+            if (original.match(/[^a-z\s]/gi)) {
+                elemId("gtext").value = "[Only alphabetic characters or blanks are allowed.]";
+                return;
+            }
+            const data = original.split('');
+            var i = 0, result = "", result_html = "";
+            while (data[i]) {
+                if (data[i] == " " || data[i] == "　") {
+                    result += ":blank:" + space;
+                    result_html += h("blank");
+                } else {
+                    result += ":hacker_" + data[i] + ":" + space;
+                    result_html += h(data[i]);
+                }
+                i++;
+            }
+            elemId("gtext").value = result;
+            elemId("box").innerHTML = result_html;
+        }
+
+        function change(mode) {
+            space = mode === "normal" ? " " : "​";
+            elemId("m-" + mode).className = "btn btn-primary";
+            elemId("m-" + (mode === "normal" ? "zero" : "normal")).className = "btn btn-secondary";
+            update();
+        }
+
+        function h(_m) {
+            return "<img src='images/" + _m + ".png'/>" + space;
+        }
+
+        function elemId(id_) {
+            return document.getElementById(id_);
+        }
+    </script>
+</body>
+</html>

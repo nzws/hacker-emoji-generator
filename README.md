@@ -1,2 +1,2 @@
-# hacker-emoji-generator
-Hacker Emoji Generator
+# generate-hacker-emoji
+https://hacker.nzws.me
